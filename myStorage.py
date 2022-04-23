@@ -13,11 +13,14 @@ def ListInUser(userid):
 
 def add(userId, userMsg):
     idx = ListInUser(userId)
-    userMsg = userMsg[5:]
-    if idx:
-        userList[idx].append(userMsg)
+    if len(userMsg) >= 5:
+        userMsg = userMsg[5:]
+        if idx:
+            userList[idx].append(userMsg)
+        else:
+            userList.append([userId,userMsg])
     else:
-        userList.append([userId,userMsg])
+        return
 
 def listDelete(userId, userMsg):
     idx = ListInUser(userId)

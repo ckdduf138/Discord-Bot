@@ -23,10 +23,12 @@ async def on_command_error(ctx, error):
 @bot.event
 async def on_reaction_add(reaction, user):
   if user.id != bot.user.id:
+    userMsg = reaction.message.embeds[0].title
     if str(reaction.emoji) == "✅":
-      userMsg = reaction.message.embeds[0].title
-      stg.listDelete(user.id, userMsg)
       await reaction.message.edit(embed=cmd.list(userMsg, 0x00ff56))
+    elif str(reaction.emoji) =="❎":
+      stg.listDelete(user.id, userMsg)
+      await reaction.message.edit(embed=cmd.list(userMsg, 0xEB3324))
 
 #명령어 시작
 @bot.command()
@@ -49,6 +51,7 @@ async def list(ctx):
       continue
     msg = await ctx.send(embed=cmd.list(userMsg, 0xffff33))
     await msg.add_reaction("✅")
+    await msg.add_reaction("❎")
 
 @bot.command()
 async def add(ctx):
