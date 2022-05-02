@@ -1,5 +1,7 @@
 #User Storage
-import numpy as np
+
+import datetime
+import queryStorage as qs
 
 userList = [["test1","test1"]]   
 
@@ -12,14 +14,11 @@ def ListInUser(userid):
         return 0
 
 def add(userId, userMsg):
-    idx = ListInUser(userId)
-    if len(userMsg) >= 5:
-        userMsg = userMsg[5:]
-        if idx:
-            userList[idx].append(userMsg)
-        else:
-            userList.append([userId,userMsg])
-    else:
+
+        now = datetime.datetime.now()
+
+        values = (userId, userMsg, 0, now)
+        qs.Query.Insert(values)
         return
 
 def listDelete(userId, userMsg):

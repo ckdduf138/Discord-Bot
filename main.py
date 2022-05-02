@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import discord
 import myCommand as cmd
 import myStorage as stg
@@ -19,6 +18,8 @@ async def on_ready():
 async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandNotFound):
     await ctx.send(f"'{ctx.message.content[1:]}' 명령어를 찾지 못했습니다")
+  else:
+    await ctx.send(f"명령어를 실행하지 못했습니다")
 
 @bot.event
 async def on_reaction_add(reaction, user):
@@ -62,7 +63,6 @@ async def add(ctx):
 @bot.command()
 async def delete(ctx):
   await ctx.send(cmd.delete(ctx))
-
 
 
 #명령어 종료
