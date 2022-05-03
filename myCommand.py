@@ -22,7 +22,7 @@ def list(userMsg, color):
 def add(userId, userMsg):
     if len(userMsg) >= 5:
         userMsg = userMsg[5:]
-        stg.add(userId, userMsg)
+        stg.addList(userId, userMsg)
         return "추가 되었습니다."
     else:
         return "내용을 입력해주세요."
