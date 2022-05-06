@@ -15,14 +15,21 @@ def listHeader(userNm, userIcon):
     embed = discord.Embed(title = "To-Do-List", description = userNm + "님의 할일 목록", color = 0x00ff56, inline = False)
     return embed
 
-def list(userMsg, color):
-    embed = discord.Embed(title = userMsg, color = color, inline = False)
+def list(userMsg):
+    
+    if(userMsg[1] == '000'):    # 000 -> 할일 하는 중
+        color =  0xffff33
+    elif(userMsg[1] == '001'):  # 001 -> 할일 완료
+        color = 0x00ff56
+    else:                       # 002 -> 할일 삭제
+        color = 0xEB3324
+    embed = discord.Embed(title = userMsg[0], color = color, inline = False)
     return embed
 
 def add(userId, userMsg):
     if len(userMsg) >= 5:
         userMsg = userMsg[5:]
-        stg.addList(userId, userMsg)
+        stg.AddList(userId, userMsg)
         return "추가 되었습니다."
     else:
         return "내용을 입력해주세요."

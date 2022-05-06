@@ -8,4 +8,5 @@ def ExecuteQuery(query,values):
     # SQL문 실행
     c.execute(query,values)
 
+    # return SQL
     return c.fetchall()
