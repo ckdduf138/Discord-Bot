@@ -36,3 +36,18 @@ def add(userId, userMsg):
 
 def delete(ctx):
     return "delete"
+
+
+def SendUserDm(userNm, userMsgList):
+    embed = discord.Embed(title = "To-Do-List", description = userNm + "님의 할일 목록", color = 0x00ff56, inline = False)
+
+    idx = 1
+    for userMsg in userMsgList:
+        msg = str(idx) + ". " + userMsg[0] 
+        embed.add_field(name = "\u200B", value= msg, inline = False)
+        idx += 1
+
+    return embed
+
+
+
