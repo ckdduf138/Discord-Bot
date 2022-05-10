@@ -5,8 +5,13 @@ import myStorage as stg
 from discord.ext import commands
 from myToken import Token
 
-bot=commands.Bot(command_prefix=';')
+# User Direct Message 
+intents = discord.Intents.default()
+intents.members = True
+
+bot = commands.Bot(command_prefix=';', intents = intents)
 bot.remove_command('help')
+
 
 @bot.event
 async def on_ready():
@@ -28,16 +33,21 @@ async def on_member_join(member):
 @bot.event
 # reaction Check
 async def on_reaction_add(reaction, user):
-  if user.id != bot.user.id:
-    userMsg = [reaction.message.embeds[0].title]
-    if str(reaction.emoji) == "✅":
-      stg.UpdateList(user.id, userMsg[0])
-      userMsg.append('001')
-      await reaction.message.edit(embed=cmd.list(userMsg))
-    elif str(reaction.emoji) =="❎":
-      stg.DeleteList(user.id, userMsg[0])
-      userMsg.append('002')
-      await reaction.message.edit(embed=cmd.list(userMsg))
+
+  # 봇이 추가한 경우 reutrn
+  if user.bot: 
+    return
+
+  userMsg = [reaction.message.embeds[0].title]
+
+  if str(reaction.emoji) == "✅":
+    stg.UpdateList(user.id, userMsg[0])
+    userMsg.append('001')
+    await reaction.message.edit(embed=cmd.list(userMsg))
+  elif str(reaction.emoji) =="❎":
+    stg.DeleteList(user.id, userMsg[0])
+    userMsg.append('002')
+    await reaction.message.edit(embed=cmd.list(userMsg))
 
 #명령어 시작
 
@@ -63,17 +73,18 @@ async def list(ctx):
 
   # 할 일이 있을 경우
 
-  # 유저 DM
+  # server Message
+  await ctx.send(embed=cmd.SendServerMessage(userNm, userMsgList))
+
+  # 유저 Direct Message
   try:
-    await ctx.message.author.send(embed=cmd.SendUserDm(userNm, userMsgList))
+    await ctx.message.author.send(embed = cmd.listHeader(userNm, userIcon))
+    for userMsg in userMsgList:
+      msg = await ctx.message.author.send(embed=cmd.list(userMsg))
+      await msg.add_reaction("✅")
+      await msg.add_reaction("❎")
   except discord.errors.Forbidden:
-    await ctx.send(f"{userNm}님 서버 이름 클릭 - 개인정보 보호 설정 - 서버 멤버가 보내는 개인 메시지 허용해주세요.")
-  #
-  await ctx.send(embed = cmd.listHeader(userNm, userIcon))
-  for userMsg in userMsgList:
-    msg = await ctx.send(embed=cmd.list(userMsg))
-    await msg.add_reaction("✅")
-    await msg.add_reaction("❎")
+    await ctx.send(f"{userNm}님\n서버 이름 클릭 - 개인정보 보호 설정 - 서버 멤버가 보내는 개인 메시지 허용해주세요.")
 
 # add
 @bot.command()
@@ -89,5 +100,6 @@ async def delete(ctx):
 
 
 #명령어 종료
+
 
 bot.run(Token)

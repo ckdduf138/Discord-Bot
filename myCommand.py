@@ -27,6 +27,11 @@ def list(userMsg):
     return embed
 
 def add(userId, userMsg):
+    userMsgList = stg.SelectList(str(userId))
+    # 할 일이 5개 이상인 경우
+    if len(userMsgList) >= 5:
+        return "할일이 너무 많은거 같은데요.."
+
     if len(userMsg) >= 5:
         userMsg = userMsg[5:]
         stg.AddList(userId, userMsg)
@@ -38,8 +43,10 @@ def delete(ctx):
     return "delete"
 
 
-def SendUserDm(userNm, userMsgList):
-    embed = discord.Embed(title = "To-Do-List", description = userNm + "님의 할일 목록", color = 0x00ff56, inline = False)
+def SendServerMessage(userNm, userMsgList):
+
+    emptyString = "                                                                                                                    "
+    embed = discord.Embed(title = "To-Do-List" + emptyString + "🗓️",description = userNm + "님의 할일 목록", color = 0x00ff56, inline = False)
 
     idx = 1
     for userMsg in userMsgList:
