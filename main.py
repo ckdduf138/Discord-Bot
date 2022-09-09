@@ -6,7 +6,7 @@ from discord.ext import commands
 from myToken import Token
 
 # User Direct Message 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.members = True
 
 bot = commands.Bot(command_prefix=';', intents = intents)
@@ -63,7 +63,6 @@ async def list(ctx):
   # 유저 정보 
   userId = ctx.message.author.id
   userNm = ctx.message.author.name
-  userIcon = ctx.author.avatar_url
 
   # 할 일이 없을 경우 return 
   userMsgList = stg.SelectList(str(userId))
@@ -78,7 +77,7 @@ async def list(ctx):
 
   # 유저 Direct Message
   try:
-    await ctx.message.author.send(embed = cmd.listHeader(userNm, userIcon))
+    await ctx.message.author.send(embed = cmd.listHeader(userNm))
     for userMsg in userMsgList:
       msg = await ctx.message.author.send(embed=cmd.list(userMsg))
       await msg.add_reaction("✅")
@@ -92,12 +91,6 @@ async def add(ctx):
   userId = ctx.message.author.id
   userMsg = ctx.message.content
   await ctx.send(cmd.add(userId, userMsg))
-
-# delete
-@bot.command()
-async def delete(ctx):
-  await ctx.send(cmd.delete(ctx))
-
 
 #명령어 종료
 
