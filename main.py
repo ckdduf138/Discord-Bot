@@ -22,9 +22,9 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandNotFound):
-    await ctx.send(f"'{ctx.message.content[1:]}' 명령어를 찾지 못했습니다")
+    await ctx.reply(f"'{ctx.message.content[1:]}' 명령어를 찾지 못했습니다")
   else:
-    await ctx.send(f"명령어를 실행하지 못했습니다")
+    await ctx.reply(f"명령어를 실행하지 못했습니다")
 
 @bot.event
 async def on_member_join(member):
@@ -54,7 +54,7 @@ async def on_reaction_add(reaction, user):
 # help
 @bot.command()
 async def help(ctx):
-  await ctx.channel.send(embed=cmd.help())
+  await ctx.reply(embed=cmd.help())
 
 # list
 @bot.command()
@@ -67,13 +67,13 @@ async def list(ctx):
   # 할 일이 없을 경우 return 
   userMsgList = stg.SelectList(str(userId))
   if len(userMsgList) < 1:
-    await ctx.send(userNm + "님 할 일이 없습니다.")
+    await ctx.reply(userNm + "님 할 일이 없습니다.")
     return
 
   # 할 일이 있을 경우
 
   # server Message
-  await ctx.send(embed=cmd.SendServerMessage(userNm, userMsgList))
+  await ctx.reply(embed=cmd.SendServerMessage(userNm, userMsgList))
 
   # 유저 Direct Message
   try:
@@ -83,14 +83,14 @@ async def list(ctx):
       await msg.add_reaction("✅")
       await msg.add_reaction("❎")
   except discord.errors.Forbidden:
-    await ctx.send(f"{userNm}님\n서버 이름 클릭 - 개인정보 보호 설정 - 서버 멤버가 보내는 개인 메시지 허용해주세요.")
+    await ctx.reply(f"{userNm}님\n서버 이름 클릭 - 개인정보 보호 설정 - 서버 멤버가 보내는 개인 메시지 허용해주세요.")
 
 # add
 @bot.command()
 async def add(ctx):
   userId = ctx.message.author.id
   userMsg = ctx.message.content
-  await ctx.send(cmd.add(userId, userMsg))
+  await ctx.reply(cmd.add(userId, userMsg))
 
 #명령어 종료
 
