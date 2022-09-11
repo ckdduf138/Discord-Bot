@@ -1,2 +1,2 @@
 #myToken.py입니다.
-Token="OTYyMzQ3NTg0MTUwNzMyODUw.YlGOBw.CfWNUVo9ZbXVmWYbf2JwHvEhKkg"
+Token="디스코드 토큰"
